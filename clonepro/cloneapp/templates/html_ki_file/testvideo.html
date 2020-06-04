@@ -1,0 +1,35 @@
+{% load staticfiles %}
+<link rel = "stylesheet" type="text/css" href = "{% static 'style.css' %}">
+<html>
+<head>
+<title>Google Icons</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<div id = "menu">
+<font size = "5">
+<ul>
+<li><a href ="{% url 'cloneapp:home' %}">Home</a></li>
+<li><a href="{% url 'cloneapp:upload' %}">Upload files</a></li>
+<li><a href="{% url 'cloneapp:getvideo' %}">Video</a></li>
+
+<li><a href="{% url 'cloneapp:getpdf' %}">Book/notes</a></li>
+<li><a href="{% url 'cloneapp:addlink' %}">References</a></li>
+<li><a href = "{% url 'cloneapp:start' %}">Log_out</a></li>
+{% if  unseen_count != 0 %}
+<li><a href="{% url 'cloneapp:showmsg' %}"><i class="material-icons" style = "font-size:40px;" onclick = "display();">sms</i><sub>{{unseen_count}}
+</li>
+</a>
+{% else %}
+<li><a href="{% url 'cloneapp:showmsg' %}"><i class="material-icons" style = "font-size:40px;" onclick = "display();">sms</i></li>
+</a>
+{% endif %}
+</ul>
+</div>
+ A home page for teachers
+ </font>
+
+</body>
+</html>

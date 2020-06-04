@@ -1,0 +1,6 @@
+{% block content %}
+    <form  action = "{% url 'cloneapp:help' %}"  method = post> {% csrf_token %}
+        <input type = "text" name="text">
+        <button type="submit"> Save </button>
+    </form>
+{% endblock %}

@@ -1,0 +1,156 @@
+{% load staticfiles %}
+<link rel = "stylesheet" type="text/css" href = "{% static 'style.css' %}">
+
+<html>
+<head>
+<link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.fa{
+    font-size: 50px;
+    cursor: pointer;
+    user-select: none;
+
+    }
+.fa:hover
+{
+    color:darkblue;
+    }
+</style>
+<script>
+var str;
+var str2;
+var str3;
+function myFunctionvideo(x)
+{
+    str = "likevideo " + x;
+    parent.location = "/?q="+str;
+    
+    }
+function myFunctionimage(x)
+{
+    str = "likeimage " + x;
+    parent.location = "/?q="+str;
+    
+    }
+function myFunctionpdf(x)
+{
+    str = "likepdf " + x;
+    parent.location = "/?q="+str;
+    
+    }
+function myFunctionaudio(x)
+{
+    str = "likeaudio " + x;
+    parent.location = "/?q="+str;
+    
+    }
+function myFunction2video(x)
+{
+    str2 = "dislikevideo " + x;
+    parent.location = "/?q="+str2;
+    
+    }
+function myFunction2image(x)
+{
+    str2 = "dislikeimage " + x;
+    parent.location = "/?q="+str2;
+    
+    }
+function myFunction2pdf(x)
+{
+    str2 = "dislikepdf " + x;
+    parent.location = "/?q="+str2;
+    
+    }
+function myFunction2audio(x)
+{
+    str2 = "dislikeaudio " + x;
+    parent.location = "/?q="+str2;
+    
+    }
+function myFunction3(x)
+{
+    str2 = "comment " + x;
+    parent.location = "/?q="+str2;
+    }
+function deletecmnt(x)
+{
+    str3 = "deletecmnt " + x;
+    confirm("do you want to delete this comment?");
+    parent.location = "/?q="+str3; 
+    }
+
+</script>
+
+</head>
+<body>
+{% if is_audio %}
+{% load staticfiles %}
+<link rel = "stylesheet" type="text/css" href = "{% static 'back.css' %}">
+<p align = "center" style = "margin:200px;">
+<audio controls>
+<source src={{MEDIA_URL}}{{video.videofile}} type="audio/ogg">
+</audio>
+<br>
+{% if is_blue == False %}
+<i class="fa fa-thumbs-up" onclick = myFunctionaudio({{video.id}})></i>
+{% endif %}
+{% if is_blue == True %}
+<i class="fa fa-thumbs-down" onclick = myFunction2audio({{video.id}}) style = "color:blue;"></i>
+{% endif %}
+{% endif %}
+{% if is_audio == False %}
+<object  width = "100%" height = "100%" controls data="{{MEDIA_URL}}{{video.videofile}}">
+</object>
+{% endif %}
+<p style = "float:right;">
+{% if is_blue == True %}
+{% if is_video == True %}
+<i class="fa fa-thumbs-down" onclick = myFunction2video({{video.id}})></i>
+{% endif %}
+{% if is_image == True %}
+<i class="fa fa-thumbs-down" onclick = myFunction2image({{video.id}})></i>
+{% endif %}
+{% if is_pdf == True %}
+<i class="fa fa-thumbs-down" onclick = myFunction2pdf({{video.id}})></i>
+{% endif %}
+{% endif %}
+{% if is_blue == False %}
+{% if is_video == True %}
+<i class="fa fa-thumbs-up" onclick = myFunctionvideo({{video.id}})></i>
+{% endif %}
+{% if is_image == True %}
+<i class="fa fa-thumbs-up" onclick = myFunctionimage({{video.id}})></i>
+{% endif %}
+{% if is_pdf == True %}
+<i class="fa fa-thumbs-up" onclick = myFunctionpdf({{video.id}})></i>
+{% endif %}
+{% endif %}
+</p>
+<p>
+
+{% for comment in comments %}
+{% if comment.user == user %}
+<div style = "font-size:30px;border-radius: 25px;background: rgba(44,62,80,0.5);width:auto;width:600px;color:white;" id = "cmnt" onclick = "deletecmnt({{comment.id}})" >
+{% else %}
+<div style = "font-size:30px;border-radius: 25px;background: rgba(44,62,80,0.5);width:auto;width:600px;color:white;">
+{% endif %}
+<ul>
+<li>
+<b>{{comment.user.username}}</b><br>
+{{comment.text}}
+</li>
+</ul>
+</div>
+{% endfor %}
+</p>
+<p>
+<form action = "/comment/{{video.id}}/" method = POST>
+{% csrf_token %}
+<input type = "text" name = "comment" style = "font-size: 30px;">
+</input>
+<input type = "submit" value = "comment" style = "font-size: 30px;">
+</input>
+</p>
+</body>
+</html>

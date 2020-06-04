@@ -1,0 +1,141 @@
+{% load staticfiles %}
+<link rel = "stylesheet" type="text/css" href = "{% static 'style.css' %}">
+
+
+<html>
+<head>
+<style>
+a
+{
+    color:white;
+    font-size : 30px;
+    }
+a:active
+{
+    color:yellow;
+    }
+a:hover
+{
+    color:yellow;
+    font-size : 35px;
+    
+    }
+
+
+</style>
+
+<script>
+var count = 0;
+var i = 0;
+var data = new Array(30);
+var str = "0 ";
+
+function ondelete()
+    {
+     parent.location = "/?q="+str; 
+        
+    }
+
+function clicked(checkelm){
+    str = "0 ";
+    if(checkelm.checked)
+    {
+        data[i] = checkelm.value;
+        i = i +1;
+        count = count +1;
+     }
+    else
+    {
+        var index = 0;
+        for(k =0;k<=data.length;k++)
+        {
+            if(data[k] == checkelm.value)
+            {
+                index = k;
+                break;
+                }
+            
+
+            }
+        data.splice(index,1);
+        count = count - 1;
+        }
+    
+    if(count == 0)
+    {
+      document.getElementById("deletebutton").innerHTML = "";
+
+      }
+    if(count > 0)
+    {
+        
+        for(j=0;j<=i-1;j++)
+        {
+        str = str + data[j]+" ";
+            }
+    var deleteid;    
+    var div = document.getElementById("deletebutton");
+        div.innerHTML = "<button id = "+deleteid+" onclick = 'ondelete();' style='font-size:25;'>Delete</button>";
+        var but = document.getElementById("+deleteid+");
+}
+    
+    }
+str = "sort "
+function func(search)
+{
+    str = str + search;
+    parent.location = "/?q="+str;
+    }
+</script>
+</head>
+<body>
+<br>
+<form action = "../menu" method = "POST">
+{% csrf_token %} 
+<input type = "text" name = "searching" style = "font-size:25;">
+</input>
+<input type = "submit" value = "Search" style = "font-size:25;">
+</input>
+</form>
+<select onchange = "func(value + ' ' + '{{search_value}}');" style = "font-size:25;">
+<option value = "0">Sort by </option>
+<option value = "1"> duration</option>
+</select>
+
+<a href = ""><p style = "color:grey;"><font size = "6">show all</font></p></a><br>
+<div id="deletebutton">
+</div>
+<div style = "float:left;" id="content">
+<table>
+{% if length == 0 %}
+No videos
+{% endif %}
+<table>
+{% for video in videos %}
+<tr id= "row" style='float:left;border-radius:25px;margin:25px;background: rgba(44,62,80,0.5);text-align:center;'>
+<td ><a href="../home2/{{video.id}}/" target = "main">
+<img width = "300" height = "200"  src ="{{MEDIA_URL}}/images/image{{video.id}}.jpg"></img></a>
+&nbsp; &nbsp;
+</td>
+<td >
+
+<a href="../home2/{{video.id}}/" target = "main">{{video.title}}-{{video.description}}</font><br>{{video.datetime}}<br>
+viewers {{video.user_viewed}}, Votes {{video.votes}}</a>
+</font>
+&nbsp; &nbsp;
+</td>
+{% if is_superuser %}
+<td>
+<form action = "">
+<input type="checkbox" value = {{video.id}} onclick = "clicked(this);" style="width:20px;height:20px;"></input>
+</form>
+</td>
+{% endif %}
+</tr>
+{% endfor %}
+</table>
+<div>
+
+
+</body>
+</html>

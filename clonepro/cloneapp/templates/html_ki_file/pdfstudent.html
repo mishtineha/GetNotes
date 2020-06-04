@@ -1,0 +1,55 @@
+{% load staticfiles %}
+<link rel = "stylesheet" type="text/css" href = "{% static 'style.css' %}">
+
+<html>
+<head>
+<style>
+a
+{
+    color:white;
+    font-size : 30px;
+    }
+a:active
+{
+    color:yellow;
+    }
+a:hover
+{
+    color:yellow;
+    font-size : 35px;
+    
+    }
+
+
+</style>
+
+</head>
+{% if length1 == 0 %}
+<p style = "color:white;font-size:30px;">
+No_files
+{% else %}
+<table>
+{% for recent_video in recent_videos %}
+<tr id= "row" style='float:left;border-radius:25px;margin:25px;background: rgba(44,62,80,0.5);text-align:center;'>
+{% if recent_video in rec_vid %}
+<td>
+<a href="../home2/{{video.id}}/" target = "main">
+<img width = "300" height = "300"  src ="{{MEDIA_URL}}/images/image{{recent_video.id}}.jpg"></img></a>
+</td>
+{% else %}
+<td>
+<object width = "300"  height = "300" controls data="{{MEDIA_URL}}{{recent_video.videofile}}"  >
+</object>
+</td>
+{% endif %}
+<td>
+<a href="home2/{{recent_video.id}}/" target = "main">{{recent_video.title}}-{{recent_video.description}}<br>
+{{recent_video.datetime}}<br>
+viewers {{recent_video.user_viewed}},votes {{recent_video.votes}}<br></a>
+</td>
+</tr>
+{% endfor %}
+</table>
+{% endif %}
+</body>
+</html>

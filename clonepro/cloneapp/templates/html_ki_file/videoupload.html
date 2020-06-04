@@ -1,0 +1,177 @@
+{% load staticfiles %}
+
+<link rel = "stylesheet" type="text/css" href = "{% static 'login.css' %}">
+<html>
+<title>Google Icons</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.signin
+{   
+	background: rgba(44,62,80,0.5);
+	padding : 40px;
+	width: 350px;
+	margin-top: 200px;
+	height: 500px;
+	margin-left: 600px;
+	border-radius: 25px;
+
+}
+
+form{
+	width: 200px;
+	text-align: center;
+}
+
+input{
+	width: 240px;
+	text-align: center;
+	background: transparent;
+	border: none;
+    border-bottom: 1px solid #fff;
+    font-family: 'play',sans-serif;
+    font-size: 16px;
+    font-weight: 200px;
+    padding: 10px 0;
+    transition: border 0.5s;
+    outline: none;
+    color: #fff;
+}
+
+input[type=button]
+{
+	border: none;
+    width: 190px;
+    background: white;
+    color: #000;
+    font-size: 16px;
+    line-height: 25px;
+    padding: 10px 0;
+    border-radius: 15px;
+    cursor: pointer;
+
+} 
+input[type=button]:hover{
+	color: #fff;
+	background-color: black;
+
+}
+h2{
+	color: white;
+}
+a{
+	color: yellow;
+	text-decoration: blink;
+}
+a:hover{
+	color: skyblue;
+}
+.container{
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	margin-left: 20px;
+}
+
+::placeholder{
+	color: aliceblue;
+	opacity: 0.8;
+}
+body{
+margin:0;
+padding : 0;
+}
+#menu {
+     height:80px;
+    background:rgba( 43, 43, 32,0.9);
+    padding:6px 0;
+    border-radius: 20px;
+    
+}
+ul {
+    list-style: none;
+    padding:0 90px;
+    margin-left: 0px;
+}
+#menu ul li{
+    
+   float:left;
+    padding:0 45px;
+    height:30px;
+ border-right:1px solid white;
+}
+    
+#menu ul li:last-child{
+    border-right:none;
+    
+}
+#menu ul li a{
+        text-decoration: none;
+        text-transform: uppercase;
+        font-size:25px;
+        color:#f9faf9;
+    line-height: 30px;
+    transition: font-size 0.3s ease;
+}
+#menu ul li a:hover,#menu ul li a.active
+{
+    font-size: 30px;
+    font-weight:bold;
+    color:#efa61e;
+}
+
+</style>
+<script>
+function type()
+{
+    alert("file format not allowed");
+    }
+function type2()
+{
+    alert("file uploaded sucessfully");
+    }
+</script>
+</head>
+<body>
+<div id = "menu">
+<font size = "5">
+<ul>
+<li><a href ="{% url 'cloneapp:home' %}">Home</a></li>
+<li><a href="{% url 'cloneapp:upload' %}">Upload files</a></li>
+<li><a href="{% url 'cloneapp:getvideo' %}">Video</a></li>
+<li><a href="{% url 'cloneapp:getpdf' %}">Book/notes</a></li>
+<li><a href="{% url 'cloneapp:addlink' %}">References</a></li>
+<li><a href = "{% url 'cloneapp:start' %}">Log_out</a></li>
+{% if  unseen_count != 0 %}
+<li><a href="{% url 'cloneapp:showmsg' %}"><i class="material-icons" style = "font-size:40px;" onclick = "display();">sms</i><sub>{{unseen_count}}
+</li>
+</a>
+{% else %}
+<li><a href="{% url 'cloneapp:showmsg' %}"><i class="material-icons" style = "font-size:40px;" onclick = "display();">sms</i></li>
+</a>
+{% endif %}
+</ul>
+</div>
+<body>
+{% if alert %}
+<script>
+type();
+</script>
+{% endif %}
+{% if uploaded %}
+<script>
+type2();
+</script>
+
+{% endif %}
+<div class="signin">
+    <form action = {% url 'cloneapp:upload' %} method = post enctype="multipart/form-data"> 
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit"> Save </button>
+    </form>
+    </div>
+    <a href={% url 'cloneapp:home' %}>go back</a>
+    </body>
+

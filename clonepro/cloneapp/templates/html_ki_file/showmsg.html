@@ -1,0 +1,130 @@
+{% load staticfiles %}
+<link rel = "stylesheet" type="text/css" href = "{% static 'style.css' %}">
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script>
+var count = 0;
+var i = 0;
+var data = new Array(30);
+var str = "msg ";
+
+function ondelete()
+    {
+     parent.location = "/?q="+str; 
+        
+    }
+
+function clicked(checkelm){
+    str = "msg ";
+    if(checkelm.checked)
+    {
+        data[i] = checkelm.value;
+        i = i +1;
+        count = count +1;
+     }
+    else
+    {
+        var index = 0;
+        for(k =0;k<=data.length;k++)
+        {
+            if(data[k] == checkelm.value)
+            {
+                index = k;
+                break;
+                }
+            
+
+            }
+        data.splice(index,1);
+        count = count - 1;
+        }
+    
+    if(count == 0)
+    {
+      document.getElementById("deletebutton").innerHTML = "";
+
+      }
+    if(count > 0)
+    {
+        
+        for(j=0;j<=i-1;j++)
+        {
+        str = str + data[j]+" ";
+            }
+    var deleteid;    
+    var div = document.getElementById("deletebutton");
+        div.innerHTML = "<button id = "+deleteid+" onclick = 'ondelete();'  style = 'font-size:25px;'>Delete</button>";
+        var but = document.getElementById("+deleteid+");
+}
+    
+    }
+</script>
+</head>
+<body>
+<div id = "menu">
+<font size = "5">
+<ul>
+<li><a href ="{% url 'cloneapp:home' %}">Home</a></li>
+<li><a href="{% url 'cloneapp:upload' %}">Upload files</a></li>
+<li><a href="{% url 'cloneapp:getvideo' %}">Video</a></li>
+<li><a href="{% url 'cloneapp:getpdf' %}">Book/notes</a></li>
+{% if  unseen_count != 0 %}
+<li><a href="{% url 'cloneapp:showmsg' %}"><i class="material-icons" style = "font-size:40px;" onclick = "display();">sms</i><sub>{{unseen_count}}
+</li>
+</a>
+{% else %}
+<li><a href="{% url 'cloneapp:showmsg' %}"><i class="material-icons" style = "font-size:40px;" onclick = "display();">sms</i></li>
+</a>
+{% endif %}
+<li><a href="{% url 'cloneapp:start' %}">Log_out</a></li>
+</ul>
+</div>
+
+<br>
+<div id = "deletebutton" >
+</div>
+{% if len_msg != 0 %}
+<ul>
+{% for msg in unseen_msg %}
+<div style = "font-size:30px;border-radius: 20px;background: black;width:auto;width:600px;color:yellow;">
+
+<li><b><font size = "5" color = "white">&nbsp;&nbsp;&nbsp;{{msg.fom}}</b></font><br>
+<form action = "">
+<table cellspacing = "15" >
+<tr>
+<td>
+
+<font size = "5" color = "white">
+Topic:-{{msg.topic}} </td> <td><font size = "5" color = "white">FileType:-{{msg.file}}</td>
+<td><font size = "5" color = "yellow"><input type="checkbox" value = {{msg.id}} onclick = "clicked(this)" style="width:20px;height:20px;"></input>
+</p>
+</td>
+</tr>
+</table>
+</div>
+</form>
+</li>
+{% endfor %}
+{% for msg1 in seen_msg %}
+<div style = "font-size:30px;border-radius: 20px;background: rgba(44,62,80,0.5);width:auto;width:600px;color:white;">
+<li><b>&nbsp;&nbsp;&nbsp;{{msg1.fom}}</b><br>
+<form action = "">
+<table cellspacing = "15" >
+<tr>
+<td>
+<font size = "5" color = "white">
+Topic:-{{msg1.topic}} </td> <td><font size = "5" color = "white">FileType:-{{msg1.file}}</td>
+<td><font size = "5"><input type="checkbox" value = {{msg1.id}} onclick = "clicked(this)" style="width:20px;height:20px;"></input>
+</td>
+</tr>
+</table>
+</form>
+</div>
+</li>
+{% endfor %}
+{% else %}
+No_messages
+{% endif %}

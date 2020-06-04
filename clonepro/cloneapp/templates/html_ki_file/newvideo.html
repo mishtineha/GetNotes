@@ -1,0 +1,27 @@
+<html>
+<head>
+
+</head>
+<frameset rows = "11%,89%">
+<frame name = "header" src = "../header">
+<frameset cols = "40%,60%">
+{% if is_pdf %}
+{% if search_value == 'none' %}
+<frame name = "menu" src = "../sortpdf">
+{% else %}
+<frame name = "menu" src = "../?q=sort2pdf+{{search_value}}">
+{% endif %}
+{% else %}
+{% if search_value == 'none' %}
+<frame name = "menu" src = "../sortmenu">
+{% else %}
+<frame name = "menu" src = "../?q=sort2+{{search_value}}">
+{% endif %}
+{% endif %}
+
+</frame>
+<frame name = "main" src = "../main">
+</frame>
+
+</frameset>
+</html>

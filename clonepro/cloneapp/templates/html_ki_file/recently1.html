@@ -1,0 +1,32 @@
+<html>
+<head>
+
+</head>
+<frameset rows = "11%,89%">
+<frame name = "header" src = "../header">
+<frameset cols = "40%,60%">
+{% if is_recent == True %}
+<frame name = "index" src = "../recent">
+{% endif %}
+{% if is_video == True %}
+<frame name = "index" src = "../menu">
+{% endif %}
+{% if is_image == True %}
+<frame name = "index" src = "../menuimage">
+{% endif %}
+{% if is_pdf == True %}
+<frame name = "index" src = "../menupdf">
+{% endif %}
+{% if is_audio == True %}
+<frame name = "index" src = "../menuaudio">
+{% endif %}
+{% if show == True %}
+<frame name = "main" src = "../home2/{{idd}}">
+</frameset>
+{% else %}
+<frame name = "main" src = "../main">
+</frameset>
+{% endif %}
+
+</frameset>
+</html>

@@ -1,0 +1,303 @@
+{% load staticfiles %}
+<link rel = "stylesheet" type="text/css" href = "{% static 'style.css' %}">
+<html>
+<head>
+<title>Google Icons</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+#menu {
+     height: 80px;
+    background:rgba( 43, 43, 32,0.9);
+    padding:6px 0;
+    border-radius: 20px;
+    
+}
+ul {
+    list-style: none;
+    padding:0 90px;
+    margin-left: 0px;
+}
+
+#menu ul li{
+    
+   float:left;
+    padding:0 40px;
+    height:30px;
+ border-right:1px solid white;
+    
+}
+#menu ul li:last-child{
+    border-right:none;
+    
+}
+#menu ul li a{
+        text-decoration: none;
+        text-transform: uppercase;
+        font-size:25px;
+        color:#f9faf9;
+    line-height: 30px;
+    transition: font-size 0.3s ease;
+}
+#menu ul li a:hover,#menu ul li a.active
+{
+    font-size: 30px;
+    font-weight:bold;
+    color:#efa61e;
+}
+
+.not
+{
+    font-size:30px;
+    color:white;
+    position:relative;
+    }
+.not:hover 
+{
+  color:#efa61e;  
+    }
+#notif
+{
+    margin-top: 200px;margin-left: 700px;border-radius: 25px;color:white;font-size:30px;
+    
+    
+    }
+#notif a
+{
+     color:white;
+     }
+#notif a:hover
+{
+    color:yellow;
+    }
+.content
+{
+    background:grey;height:60px;border-radius:20px;
+    margin-top:10px;
+    }
+.content:hover
+{
+    color:yellow;
+    font-size:35px;
+    }
+.fa
+{
+    margin-left:450px;
+    }
+.fa:hover
+{
+    color:red;
+    }
+</style>
+<script>
+
+var count = 0;
+var i = 0;
+var data = new Array(30);
+var str = "msg ";
+var notify = "not ";
+function already()
+{
+alert("already exist ");
+}
+function detail(id)
+
+{
+    notify = notify + id;
+    parent.location = "/?q="+notify;
+    }
+function loc()
+{
+    parent.location = "../login"
+    }
+function display()
+{
+    document.getElementById("notif").style.background = "rgba(44,62,80,0.5)";
+    document.getElementById("notif").style.padding = "40px";
+    document.getElementById("notif").style.width = "450px";
+    document.getElementById("notif").style.height =  "500px";
+    document.getElementById("notif").innerHTML = "<i class='fa fa-close' onclick = 'loc();'></i>{% for n in notify %}<div class = 'content'  onclick = 'detail({{n.id}});'>&nbsp;&nbsp;&nbsp;{{n.msg}}</div><br>{% endfor %}<a href = '../shownotify'>clear all</a>";
+}
+
+function ondelete()
+    {
+        
+if(confirm("you want to delete this?"))
+{
+     parent.location = "/?q="+str;
+     }
+        
+    }
+
+function clicked(checkelm)
+{
+    str = "pref ";
+    if(checkelm.checked)
+    {
+        data[i] = checkelm.value;
+        i = i +1;
+        count = count +1;
+     }
+    else
+    {
+        var index = 0;
+        for(k =0;k<=data.length;k++)
+        {
+            if(data[k] == checkelm.value)
+            {
+                index = k;
+                break;
+                }
+            
+
+            }
+        data.splice(index,1);
+        count = count - 1;
+        }
+    
+    if(count == 0)
+    {
+      document.getElementById("deletebutton").innerHTML = "";
+
+      }
+    if(count > 0)
+    {
+        
+        for(j=0;j<=i-1;j++)
+        {
+        str = str + data[j]+" ";
+            }
+    var deleteid;    
+    var div = document.getElementById("deletebutton");
+        div.innerHTML = "&nbsp; &nbsp; &nbsp; <button id = "+deleteid+" onclick = 'ondelete();'  style='font-size:25px;'>Delete</button>";
+        var but = document.getElementById("+deleteid+");
+}
+    
+    }
+function validate()
+{
+    if(document.myform.text2.value == "")
+    {
+        alert("provide topic")
+        document.myform.text2.focus();
+        return false;
+
+        }
+    else
+    {
+        alert("your request is sent");
+        return true;
+
+        }
+    
+
+    }
+function neha()
+{
+    if(document.myform2.preference.value == "")
+    {
+        alert("please add preference");
+        document.myform2.preference.focus();
+        return false;
+
+        }
+    }
+</script>
+
+</head>
+<body>
+{% if is_repeated %}
+<script>
+already();
+</script>
+{% endif %}
+<div id = "menu">
+<font size = "5">
+<ul>
+<li><a href ="{% url 'cloneapp:login' %}">Home</a></li>
+<li ><a href="{% url 'cloneapp:home2' %}">Video</a></li>
+<li><a href="{% url 'cloneapp:pdfstudent' %}">Book/notes</a></li>
+
+<li><a href="{% url 'cloneapp:recently' %}">Recently_viewed</a></li>
+<li><a href="{% url 'cloneapp:addlink' %}">References</a></li>
+<li><a href = "{% url 'cloneapp:start' %}">Log_out</a></li>
+{% if length > 0 %}
+<li class = "not"><i class="material-icons" style = "font-size:40px;" onclick = "display();">sms</i><sub>{{length}}</li>
+
+{% else %}
+<li ><i class="material-icons" style = "font-size:40px;
+    color:white;
+    position:relative;">sms</i>
+</li>
+
+{% endif %}
+
+</ul>
+</div>
+
+<div style="float:left;color:white;margin-top:150px;width:700px;">
+
+<h1> &nbsp;&nbsp;&nbsp;&nbsp;How it is useful for students</h1>
+<ul style = "font-size:35px;">
+<li>Dictation kills classroom time, and conceptual discussion is non-existent these days</li><br>
+<li>The student can access notes from various teachers, compare and refer to the one that suits the requirements.</li>
+<br><li>Students can vote their favourite notes</li><br>
+<li>They can get Notification for their preferences</li>
+</ul>
+</div>
+<div style='float:right;border-radius:25px;margin:25px;background: rgba(44,62,80,0.5);text-align:center;color:white;'>
+<div>
+<form method = POST action = "{% url 'cloneapp:msg' %}" onsubmit = "return(validate());" name="myform">
+{% csrf_token %}
+<table style='font-size:25;' cellspacing = "20">
+<font size = "10px;">
+
+<tr><td><input type = "text" name = "text1" placeholder = "T0" style='font-size:25;'>
+</input></td></tr>
+<tr><td><input type = "text" name = "text2" placeholder = "Topic"  style='font-size:25;'></input></td></tr>
+<div id = "alert">
+</div>
+<tr><td><input type ="text" name = "text3" placeholder = "File"  style='font-size:25;'></input></td></tr>
+<tr><td><input type = "submit" value = "send request"  style='font-size:25;'></input></td></tr>
+</table>
+</form>
+&nbsp; &nbsp; Your Preferences
+<form action = "">
+<ul>
+{% for per in pers %}
+<li>
+{{per.pref}}
+<font size = "8">
+<input type="checkbox" value = {{per.id}} onclick = "clicked(this);" style="width:15px;height:15px;"></input>
+</font>
+</li>
+</tr>
+{% endfor %}
+</ul>
+</form>
+</div>
+<div id = "deletebutton" >
+</div>
+<form method = POST action = ""  onsubmit = "return(neha());"  name="myform2">
+{% csrf_token %} 
+&nbsp; &nbsp; <select name = "preference"   style='font-size:25;'>
+<option value = "">select topics</option>
+{% for video in videos %}
+<option value = {{video.title}}>
+{{video.title}}
+</option>
+{% endfor %}
+</select>
+<input type = "submit" value = "Add" style='font-size:25;'></input>
+</form>
+</div>
+<div id = "notif">
+</div>
+
+
+</body>
+ 
+
+

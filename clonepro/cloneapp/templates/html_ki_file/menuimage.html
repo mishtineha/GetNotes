@@ -1,0 +1,125 @@
+{% load staticfiles %}
+<link rel = "stylesheet" type="text/css" href = "{% static 'style.css' %}">
+
+<html>
+<head>
+<script>
+var count = 0;
+var i = 0;
+var data = new Array(30);
+var str = "";
+
+function ondelete()
+    {
+     parent.location = "/?q="+str; 
+        
+    }
+
+function clicked(checkelm){
+    str = "1 ";
+    if(checkelm.checked)
+    {
+        data[i] = checkelm.value;
+        i = i +1;
+        count = count +1;
+     }
+    else
+    {
+        var index = 0;
+        for(k =0;k<=data.length;k++)
+        {
+            if(data[k] == checkelm.value)
+            {
+                index = k;
+                break;
+                }
+            
+
+            }
+        data.splice(index,1);
+        count = count - 1;
+        }
+    
+    if(count == 0)
+    {
+      document.getElementById("deletebutton").innerHTML = "";
+
+      }
+    if(count > 0)
+    {
+        
+        for(j=0;j<=i-1;j++)
+        {
+        str = str + data[j]+" ";
+            }
+    var deleteid;    
+    var div = document.getElementById("deletebutton");
+        div.innerHTML = "<button id = "+deleteid+" onclick = 'ondelete();' style = 'font-size:25;'>Delete</button>";
+        var but = document.getElementById("+deleteid+");
+}
+    
+    }
+</script>
+<style>
+a
+{
+    color:white;
+    font-size : 30px;
+    }
+a:active
+{
+    color:yellow;
+    }
+a:hover
+{
+    color:yellow;
+    font-size : 35px;
+    
+    }
+
+
+</style>
+</head>
+<body>
+<br>
+<form action = "../menuimage" method = "POST">
+{% csrf_token %} 
+<input type = "text" name = "searching" style = "font-size:25;">
+</input>
+<input type = "submit" value = "Search" style = "font-size:25;">
+</input>
+</form>
+<a href = ""><p style = "color:grey;"><font size = "6">show all</font></p></a><br>
+<div id="deletebutton">
+</div>
+<div style = "float:left;" id="content">
+<table>
+{% if length == 0 %}
+NO_Images
+{% endif %}
+{% for image in images %}
+<tr style='float:left;border-radius:25px;margin:25px;background: rgba(44,62,80,0.5);text-align:center;'>
+<td><a href="../home2/{{image.id}}/" target = "main">
+<img width = "300" height = "200"  src ="{{MEDIA_URL}}{{image}}"></img></a>
+&nbsp; &nbsp;
+</td>
+<td>
+<font size = "6">
+<a href="../home2/{{image.id}}/" target = "main">{{image.title}}{{image.description}}<br>{{image.datetime}}<br>
+viewers {{image.user_viewed}},votes {{image.votes}}</a>
+</font>
+&nbsp; &nbsp;
+</td>
+{% if is_superuser %}
+<td>
+<form action = "">
+<input type="checkbox" value = {{image.id}} onclick = "clicked(this)" style="width:20px;height:20px;"></input>
+</form>
+</td>
+{% endif %}
+</tr>
+{% endfor %}
+</table>
+</div>
+</body>
+<html>

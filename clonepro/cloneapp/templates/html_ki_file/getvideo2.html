@@ -1,0 +1,66 @@
+<html>
+<head>
+<style>
+a:link {
+color: green;
+}
+a:visited {
+color: green;
+}
+a:hover {
+color: red;
+}
+a:active {
+color: red;
+}
+</style>
+</head>
+<body>
+<hr><font size = "5">
+<a href ="{% url 'cloneapp:login' %}">Home</a>&nbsp &nbsp
+<a href="{% url 'cloneapp:home2' %}">Video</a>&nbsp &nbsp
+<a href="{% url 'cloneapp:pdfstudent' %}">Book/notes</a>&nbsp &nbsp
+{% if  unseen_count != 0 %}
+<a href="{% url 'cloneapp:shownotify' %}" style="color:red;"> Notfication <sub>{{unseen_count}}</sub>
+</a>&nbsp &nbsp
+{% else %}
+<a href="{% url 'cloneapp:shownotify' %}">Notification</a>&nbsp &nbsp </a>&nbsp &nbsp
+{% endif %}
+<a href = "{% url 'cloneapp:start' %}">Log_out</a>
+<hr>
+<br>
+<form action = "">
+Search:-<input type="text" name = "search1" onchange = "searchvideos(this.value)"></input>
+</form>
+<div style = "float:left;" id="content">
+<table>
+{% for video in videos %}
+<tr>
+<td><a href="{{video.id}}/">
+<img width = "50" height = "50"  src ="{{MEDIA_URL}}/images/image{{video.id}}.jpg"></a>
+</img>&nbsp; &nbsp;
+</td>
+<td>
+<font size = "5">
+<a href="{{video.id}}/">{{video.title}}-<font size="4">{{video.description}}</font><br>{{video.datetime}}<br>
+by-{{video.user.username}},viewers {{video.user_viewed}}</a>
+</font>
+&nbsp; &nbsp;
+</td>
+</tr>
+{% endfor %}
+</table>
+<br>
+<br>
+</div>
+<div style = "float:right;border:1px solid black;margin:25">
+{% if length != 0 %}
+&nbsp; &nbsp; Recently viewed&nbsp; &nbsp;<br><br>
+{% for recent_video in recent_videos %}
+&nbsp; &nbsp;<a href="{{recent_video.id}}/">{{recent_video.title}}-<font size="4">{{recent_video.description}}</font><br>&nbsp; &nbsp;{{recent_video.datetime}}<br>
+&nbsp; &nbsp;by-{{recent_video.user.username}},viewers {{recent_video.user_viewed}}</a><br><br>
+{% endfor %}
+{% endif %}
+</div>
+</body>
+</html>

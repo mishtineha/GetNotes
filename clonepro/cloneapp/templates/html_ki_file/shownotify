@@ -1,0 +1,16 @@
+{% if len_noti != 0 %}
+<ul>
+{% for noti in unseen_noti %}
+<li><p style="color:blue;"><b>{{noti.fom}}</b><br>
+Topic:-{{msg.topic}} FileType:-{{noti.file}}
+</p>
+</li>
+{% endfor %}
+{% for noti in seen_noti %}
+<li><b>{{noti.fom}}</b><br>
+Topic:-{{noti.topic}} FileType:-{{noti.file}}
+</li>
+{% endfor %}
+{% else %}
+No_messages
+{% endif %}

@@ -1,0 +1,181 @@
+{% load staticfiles %}
+<link rel = "stylesheet" type="text/css" href = "{% static 'style.css' %}">
+
+
+
+<html>
+<head>
+<style>
+a
+{
+    color:white;
+    font-size : 30px;
+    }
+a:active
+{
+    color:yellow;
+    }
+a:hover
+{
+    color:yellow;
+    font-size : 35px;
+    
+    }
+
+
+</style>
+<script>
+var count = 0;
+var i = 0;
+var data = new Array(30);
+var str = "2 ";
+
+function ondelete()
+    {
+     parent.location = "/?q="+str; 
+        
+    }
+
+function clicked(checkelm){
+    str = "2 ";
+    if(checkelm.checked)
+    {
+        data[i] = checkelm.value;
+        i = i +1;
+        count = count +1;
+     }
+    else
+    {
+        var index = 0;
+        for(k =0;k<=data.length;k++)
+        {
+            if(data[k] == checkelm.value)
+            {
+                index = k;
+                break;
+                }
+            
+
+            }
+        data.splice(index,1);
+        count = count - 1;
+        }
+    
+    if(count == 0)
+    {
+      document.getElementById("deletebutton").innerHTML = "";
+
+      }
+    if(count > 0)
+    {
+        
+        for(j=0;j<=i-1;j++)
+        {
+        str = str + data[j]+" ";
+            }
+    var deleteid;    
+    var div = document.getElementById("deletebutton");
+        div.innerHTML = "<button id = "+deleteid+" onclick = 'ondelete();' style = 'font-size:25px;'>Delete</button>";
+        var but = document.getElementById("+deleteid+");
+}
+
+    
+    }
+str = "sortpdf "
+function func(search)
+{
+    str = str + search;
+    parent.location = "/?q="+str;
+    }
+function func2()
+{
+    parent.location = "../getpdf";
+    }
+</script>
+</head>
+<body>
+<form action = "../menupdf" method = "POST">
+{% csrf_token %} 
+<br><input type = "text" name = "searching" style = "font-size:25;">
+</input>
+<input type = "submit" value = "Search" style = "font-size:25px;">
+</input>
+</form>
+{% if is_sorted %}
+<select onchange = "func2();" style = "font-size:25;">
+<option value = "0">no of pages </option>
+<option value = "1">Sort by</option>
+</select>
+{% else %}
+<select onchange = "func(value + ' ' + '{{search_value}}');" style = "font-size:25;">
+<option value = "0">Sort by </option>
+<option value = "1">no of pages</option>
+</select>
+
+{% endif %}
+<a href = "../menupdf"><p style = "color:grey;"><font size = "6">show all</font></p></a><br>
+{% if len_pdf == 0 and len_pdf2 == 0 %}
+No_files
+{% endif %}
+
+
+<div id = "deletebutton">
+</div>
+{% if len_pdf != 0 %}
+<table>
+
+{% for pdf in pdfs %}
+<tr style='float:left;border-radius:25px;margin:25px;background: rgba(44,62,80,0.5);text-align:center;'>
+<td>
+<object type="application/pdf"  width = "300"  height = "300" controls data="{{MEDIA_URL}}{{pdf.videofile}}"  >
+</object>
+</td>
+<td>
+<font size = "5">
+<a href="../home2/{{pdf.id}}/" target = "main">{{pdf.title}}-{{pdf.description}}<br>{{pdf.datetime}}<br>
+viewers {{pdf.user_viewed}},votes {{pdf.votes}}<br>pages {{pdf.size}}</a>
+</font>
+&nbsp; &nbsp;
+</td>
+{% if is_superuser %}
+<td>
+<form action = "">
+<input type="checkbox" value = {{pdf.id}} onclick = "clicked(this)" style="width:20px;height:20px;"></input>
+</form>
+</td>
+</tr>
+{% else %}
+</tr>
+{% endif %}
+{% endfor %}
+<tr>
+</tr>
+</table>
+{% endif %}
+{% if len_pdf2 != 0 %}
+<table>
+{% for key, value in pdfs2.items %}
+<tr style='float:left;border-radius:25px;margin:25px;background: rgba(44,62,80,0.5);text-align:center;'>
+<td>
+<a href="../home2/{{key.id}}/" target = "main"><object data="{{MEDIA_URL}}{{key.videofile}}" type="application/pdf" width = "300" height = "300" >
+</object></a>
+</td>
+<td>
+<font size = "5">
+<a href="../?q=page+{{key.id}}+{{value}}" target = "main">{{key.title}}-{{key.description}}<br>{{key.datetime}}<br>
+viewers {{key.user_viewed}},votes {{key.votes}}<br>pages {{key.size}}</a>
+</font>
+&nbsp; &nbsp;
+</td>
+{% if is_superuser %}
+<td>
+<form action = "">
+<input type="checkbox" value = {{key.id}} onclick = "clicked(this)" style="width:20px;height:20px;"></input>
+</form>
+</td>
+{% endif %}
+{% endfor %}
+</table>
+{% endif %}
+</body>
+</html>

@@ -1,0 +1,16 @@
+<html>
+<head>
+
+<frameset rows = "11%,89%">
+<frame name = "header" src = "../header">
+<frameset cols = "40%,60%">
+<frame name = "index" src = "../menuimage">
+<frame name = "main" src = "../main">
+</frameset>
+</frameset>
+{% for image in images %}
+<img  width = "200" height = "200" controls src="{{MEDIA_URL}}{{image}}" >
+</img>
+{% endfor %}
+</body>
+</html>

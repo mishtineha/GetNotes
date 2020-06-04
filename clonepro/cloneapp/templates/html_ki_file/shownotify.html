@@ -1,0 +1,36 @@
+{% load staticfiles %}
+<link rel = "stylesheet" type="text/css" href = "{% static 'style.css' %}">
+
+
+<html>
+<body>
+<div id = "menu">
+<font size = "5">
+<ul>
+<li><a href ="{% url 'cloneapp:login' %}" class = "active">Home</a></li>
+<li ><a href="{% url 'cloneapp:home2' %}">Video</a></li>
+<li><a href="{% url 'cloneapp:getimages' %}">Images</a></li>
+<li><a href="{% url 'cloneapp:pdfstudent' %}">Book/notes</a></li>
+{% if  unseen_count != 0 %}
+<li><a href="{% url 'cloneapp:shownotify' %}" style="color:red;"> Notfication <sub>{{unseen_count}}</sub>
+</a></li>
+{% else %}
+<li><a href="{% url 'cloneapp:shownotify' %}">Notification</a></li>
+{% endif %}
+<li><a href = "{% url 'cloneapp:start' %}">Log_out</a></li>
+</ul>
+</div>
+{% if len_noti != 0 %}
+<ul>
+{% for noti in unseen_noti %}
+<li><p style="color:blue;"><b>{{noti.msg}}</b><br>
+</p>
+</li>
+{% endfor %}
+{% for noti in seen_noti %}
+<li><b>{{noti.msg}}</b><br>
+</li>
+{% endfor %}
+{% else %}
+No_Notification
+{% endif %}

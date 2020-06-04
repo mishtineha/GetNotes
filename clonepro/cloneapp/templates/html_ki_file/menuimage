@@ -1,0 +1,25 @@
+<html>
+<head>
+</head>
+<body>
+<div style = "float:left;" id="content">
+<table>
+{% for video in videos %}
+<tr>
+<td><a href="../home2/{{video.id}}/" target = "main">
+<img width = "250" height = "150"  src ="{{MEDIA_URL}}/images/image{{video.id}}.jpg"></img></a>
+&nbsp; &nbsp;
+</td>
+<td>
+<font size = "5">
+<a href="../home2/{{video.id}}/" target = "main">{{video.title}}-<font size="4">{{video.description}}</font><br>{{video.datetime}}<br>
+viewers {{video.user_viewed}}</a>
+</font>
+&nbsp; &nbsp;
+</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+</body>
+<html>

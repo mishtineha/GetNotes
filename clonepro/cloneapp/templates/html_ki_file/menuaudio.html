@@ -1,0 +1,99 @@
+<html>
+<head>
+<script>
+var count = 0;
+var i = 0;
+var data = new Array(30);
+var str = "3 ";
+
+function ondelete()
+    {
+     parent.location = "/?q="+str; 
+        
+    }
+
+function clicked(checkelm){
+    str = "3 ";
+    if(checkelm.checked)
+    {
+        data[i] = checkelm.value;
+        i = i +1;
+        count = count +1;
+     }
+    else
+    {
+        var index = 0;
+        for(k =0;k<=data.length;k++)
+        {
+            if(data[k] == checkelm.value)
+            {
+                index = k;
+                break;
+                }
+            
+
+            }
+        data.splice(index,1);
+        count = count - 1;
+        }
+    
+    if(count == 0)
+    {
+      document.getElementById("deletebutton").innerHTML = "";
+
+      }
+    if(count > 0)
+    {
+        
+        for(j=0;j<=i-1;j++)
+        {
+        str = str + data[j]+" ";
+            }
+    var deleteid;    
+    var div = document.getElementById("deletebutton");
+        div.innerHTML = "<button id = "+deleteid+" onclick = 'ondelete();' >Delete</button>";
+        var but = document.getElementById("+deleteid+");
+}
+    
+    }
+</script>
+</head>
+<body>
+<form action = "../menuaudio" method = "POST">
+{% csrf_token %} 
+<input type = "text" name = "searching">
+</input>
+<input type = "submit" value = "Search" >
+</input>
+</form>
+<a href = "">show all</a><br>
+<div id = "deletebutton" >
+</div>
+<table cellspacing = "20">
+{% if length == 0 %}
+no_audios
+{% endif %}
+{% for audio in audios %}
+<tr>
+<td>
+<img width = "200" height = "150"  src ="{{MEDIA_URL}}/audio.png"></img></a>
+</td>
+<td>
+<font size = "5">
+<a href="../home2/{{audio.id}}/" target = "main">{{audio.title}}-<font size="4">{{audio.description}}</font><br>{{audio.datetime}}<br>
+viewers {{audio.user_viewed}},votes {{audio.votes}}</a>
+</font>
+</td>
+{% if is_superuser %}
+<td>
+<form action = "">
+<input type="checkbox" value = {{audio.id}} onclick = "clicked(this)"></input>
+</form>
+</td>
+{% endif %}
+{% endfor %}
+</table>
+
+</body>
+
+</html>

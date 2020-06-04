@@ -1,0 +1,93 @@
+{% load staticfiles %}
+<link rel = "stylesheet" type="text/css" href = "{% static 'style.css' %}">
+
+
+<html>
+<head>
+<title>Google Icons</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+a
+{
+font-size : 30px;
+color:blue;
+    }
+a:hover
+{
+    font-size:35px;}
+</style>
+</head>
+<body>
+<div id = "menu">
+{% if is_superuser %}
+<font size = "5">
+<ul>
+<li><a href ="{% url 'cloneapp:home' %}">Home</a></li>
+<li><a href="{% url 'cloneapp:upload' %}">Upload files</a></li>
+<li><a href="{% url 'cloneapp:getvideo' %}">Video</a></li>
+
+<li><a href="{% url 'cloneapp:getpdf' %}">Book/notes</a></li>
+<li><a href="{% url 'cloneapp:addlink' %}">References</a></li>
+<li><a href = "{% url 'cloneapp:start' %}">Log_out</a></li>
+{% if  unseen_count != 0 %}
+<li><a href="{% url 'cloneapp:showmsg' %}"><i class="material-icons" style = "font-size:40px;" onclick = "display();">sms</i><sub>{{unseen_count}}
+</li>
+</a>
+{% else %}
+<li><a href="{% url 'cloneapp:showmsg' %}"><i class="material-icons" style = "font-size:40px;" onclick = "display();">sms</i></li>
+</a>
+{% endif %}
+</ul>
+{% else %}
+<font size = "5">
+<ul>
+<li><a href ="{% url 'cloneapp:login' %}">Home</a></li>
+<li ><a href="{% url 'cloneapp:home2' %}">Video</a></li>
+<li><a href="{% url 'cloneapp:pdfstudent' %}">Book/notes</a></li>
+<li><a href="{% url 'cloneapp:recently' %}">Recently_viewed</a></li>
+<li><a href="{% url 'cloneapp:addlink' %}">References</a></li>
+<li><a href = "{% url 'cloneapp:start' %}">Log_out</a></li>
+</ul>
+{% endif %}
+</div>
+{% if length == 0 %}
+No_links
+{% else %}
+<ul>
+{% for l in links %}
+<li><a href = {{l.link}}> {{l.link}}</a><br><br>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+<ul>
+<li>
+<form method = "POST" action = "" name = "add" onsubmit = "return(funct());">
+{% csrf_token %}
+<input type = "link" placeholder = "addlink" name = "addlink" style = "font-size:30px;"></input>
+<input type = "submit" value = "add" style = "font-size:30px;">
+</li>
+</ul>
+</form>
+</body>
+<script>
+function funct()
+{
+    var dotpos = document.add.addlink.value.lastIndexOf(".");
+    if(document.add.addlink.value == "")
+    {
+        alert("provide link");
+        return false;
+        }
+    if(dotpos < 2)
+    {
+        alert("provide valid link");
+        return false;
+        }
+    
+    
+    }
+</script>
+</html>
